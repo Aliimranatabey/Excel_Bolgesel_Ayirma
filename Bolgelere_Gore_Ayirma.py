@@ -1,8 +1,8 @@
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 
-kaynak_dosya_adi = 'denemeMesh.xlsx'
-hedef_dosya_adi = 'Mesh İhtiyacı Olabilecek Müşterilerin Dağılımları.xlsx'
+kaynak_dosya_adi = 'Mesh İhtiyaci Olabilecek Musterilerin Dagılımlari Dolu.xlsx'
+hedef_dosya_adi = 'Mesh İhtiyacı Olabilecek Müşterilerin Dağılımlari.xlsx'
 
 kaynak_workbook = openpyxl.load_workbook(kaynak_dosya_adi)
 hedef_workbook = openpyxl.load_workbook(hedef_dosya_adi)
@@ -14,6 +14,8 @@ veri_satirlari = list(kaynak_sheet.iter_rows(values_only=True))
 bolge_sayfalari = {}
 
 ilkSatir=["Bölge","İl","İlçe","Alt Yapı","Wi-Fi Versiyon","Profil","MAC","SERVICENO"]
+# if kaynak_dosya_adi=='Hattı Sağlıklı Olup Saturasyon Yaşayan Upsell Adayı Müsteriler (DSL) Dolu.xlsx':
+#             ilkSatir.remove("Profil")
 for i in veri_satirlari:
     if "Bölge"==veri_satirlari[0][0]:
         veri_satirlari.remove(i)
@@ -23,7 +25,9 @@ for satir_index, satir in enumerate(veri_satirlari):
     
     if bolge_degerleri not in bolge_sayfalari:
         bolge_sayfalari[bolge_degerleri] = hedef_workbook.create_sheet(title=bolge_degerleri)
+        
         bolge_sayfalari[bolge_degerleri].append(ilkSatir)
+            
         
         # İlk satırı kalın (bold) yap
         for cell in bolge_sayfalari[bolge_degerleri][1]:
@@ -40,7 +44,7 @@ for satir_index, satir in enumerate(veri_satirlari):
 
         # Her sütunun genişliğini arttır
         for column_index, column in enumerate(bolge_sayfalari[bolge_degerleri].columns, start=1):
-            bolge_sayfalari[bolge_degerleri].column_dimensions[column[0].column_letter].width = kaynak_sheet.column_dimensions[kaynak_sheet.cell(row=1, column=column_index).column_letter].width + 15
+            bolge_sayfalari[bolge_degerleri].column_dimensions[column[0].column_letter].width = kaynak_sheet.column_dimensions[kaynak_sheet.cell(row=1, column=column_index).column_letter].width + 2
     
     # Veriyi ilgili sayfaya ekle
     bolge_sayfalari[bolge_degerleri].append(list(satir))
